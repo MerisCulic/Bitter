@@ -1,7 +1,10 @@
 localhost/
+*.sqlite
 *.json
 .pytest_cache
 *.db
 test.db/
 node_modules/
 .idea
+__pycache__/
+venv/
