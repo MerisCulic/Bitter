@@ -1,6 +1,6 @@
 (function () {
     function getBitts() {
-        console.log("Occurring every 3 minutes");
+        console.log("Occurring once a week");
 
         let storeBittsRaw = localStorage.bitts;
 
@@ -49,5 +49,5 @@
 
     getBitts();
 
-    setInterval(getBitts, 180*1000);
+    setInterval(getBitts, 168*60*60*1000);
 }())
