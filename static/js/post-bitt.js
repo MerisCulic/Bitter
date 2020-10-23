@@ -5,28 +5,33 @@
         let username = document.getElementById("usernameBittInput").value;
         let text = document.getElementById("textBittArea").value;
 
-        let jsonData = JSON.stringify({"username":username, "text":text});
-        let xhttp = new XMLHttpRequest();
-        xhttp.onload = function(){
-            if (this.readyState === 4){
-                if (this.status === 200){
-                bitt = JSON.parse(xhttp.responseText);
+        let jsonData = JSON.stringify({"username": username, "text": text});
 
+        fetch("https://bitter-web-app.herokuapp.com/create-bitt", {
+                method: 'post',
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                body: jsonData
+            })
+            .then(response => response.json())
+            .then(function (bitt) {
                 let container = document.getElementById("bittsContainer");
+
                 let bittElement = document.createElement("p");
-                bittElement.innerHTML = bitt.text + "<br> <small> <i>" + bitt.username +"</i> </small>";
+                bittElement.innerHTML = bitt.text + "<br> <small>" + bitt.username + "</small>";
 
                 container.prepend(bittElement);
 
-                document.getElementById("createBittModal").click();
+                let storedBitts = JSON.parse(localStorage.bitts);
+                storedBitts.unshift(bitt);
+                localStorage.bitts = JSON.stringify(storedBitts);
 
-                } else {
-                console.log("Oops, there was an error...");
-                }
-            }
-        }
-    xhttp.open("POST", "/create-bitt", true);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(jsonData)
+                document.getElementById("createBittModal").click();
+            })
+            .catch(function (error) {
+                console.log('Request failed', error);
+            });
     });
+
 }())
